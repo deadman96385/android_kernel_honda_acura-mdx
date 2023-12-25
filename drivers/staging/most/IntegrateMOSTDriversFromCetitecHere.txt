@@ -1,0 +1,22 @@
+<!-- Integrate cetitec MOST driver into Kernel MOST driver -->
+
+Integrate the MOST Drivers from vendor/k2l/most/Intel/source/kernel
+folder into the folders here.
+
+Out of all the list of files integrated here from Cetitec Release,
+only the below list of files are used as part of kernel.
+
+"kernel/android-4.9/drivers/staging/most/aim-cdev/cdev.c"
+"kernel/android-4.9/drivers/staging/most/aim-cdev/cdev.c"
+"kernel/android-4.9/drivers/staging/most/aim-cdev/Makefile"
+"kernel/android-4.9/drivers/staging/most/aim-cdev/Kconfig"
+"kernel/android-4.9/drivers/staging/most/mostcore/core.c"
+"kernel/android-4.9/drivers/staging/most/mostcore/mostcore.h"
+"kernel/android-4.9/drivers/staging/most/mostcore/Makefile"
+"kernel/android-4.9/drivers/staging/most/mostcore/Kconfig"
+"kernel/android-4.9/drivers/staging/most/aim-network/networking.c"
+"kernel/android-4.9/drivers/staging/most/aim-network/Makefile"
+"kernel/android-4.9/drivers/staging/most/aim-network/Kconfig"
+"kernel/android-4.9/drivers/staging/most/hdm-usb/hdm_usb.c"
+"kernel/android-4.9/drivers/staging/most/hdm-usb/Makefile"
+"kernel/android-4.9/drivers/staging/most/hdm-usb/Kconfig"

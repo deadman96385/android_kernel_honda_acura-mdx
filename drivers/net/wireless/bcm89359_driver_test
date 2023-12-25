@@ -1,0 +1,152 @@
+
+This document presents WiFi gerrit list, test images building and wifi chip
+sanity tests
+
+###################
+code upload
+##################
+repo upload
+http://12.171.88.35:8110/#/c/66/
+
+#######################
+WiFi related gerrits
+#######################
+
+http://diam-hrao:8100/job/tyaa-options/137/
+
+Topic wifi_bringup_on_mrb
+
+Success Build #137 (Mar 8, 2018 8:38:36 PM)
+Target: gordon_peak-userdebug
+Branch: diam-dev
+Total Patches: 15
+Gerrit Patch: intel/a/aosp/platform/hardware/broadcom/wlan, 76/4
+Gerrit Patch: intel/a/aosp/platform/hardware/broadcom/wlan, 80/3
+Gerrit Patch: intel/a/bsp/device/intel/broxton, 73/1
+Gerrit Patch: intel/a/bsp/device/intel/broxton, 74/1
+Gerrit Patch: intel/a/bsp/device/intel/broxton, 75/3
+Gerrit Patch: intel/a/bsp/device/intel/broxton, 86/10
+Gerrit Patch: intel/a/bsp/kernel/bxt, 67/1
+Gerrit Patch: intel/a/bsp/kernel/bxt, 68/1
+Gerrit Patch: intel/a/bsp/kernel/bxt, 69/4
+Gerrit Patch: intel/a/bsp/kernel/bxt, 70/1
+Gerrit Patch: intel/a/bsp/kernel/bxt, 82/3
+Gerrit Patch: intel/a/bsp/kernel/config-lts, 71/6
+Gerrit Patch: intel/a/bsp/kernel/config-lts, 84/1
+Gerrit Patch: intel/a/bsp/kernel/modules/marvell, 72/1
+Gerrit Patch: intel/a/bsp/vendor/intel/common, 85/2
+
+
+##################
+flashing target
+#################
+1.cd out/target/product/gordon_peak
+2.mkdir flash_images
+3.cd flash_images
+4.cp ../gordon_peak-flashfiles-eng.weijie_yang.zip .
+5.unzip gordon_peak-flashfiles-eng.weijie_yang.zip
+6.on another terminal, run: platformtool &
+7.on platformtool, choose:
+  out/target/product/gordon_peak/flash_images/flash.json
+8.put target into fastboot mode
+9.start flashing
+10.target will auto reboot after flashing
+
+#################
+adb remount
+#################
+1. On host, run:adb reboot bootloader
+2. Under fastboot mode, run below commands:
+    1)fastboot flashing unlock
+    2)fastboot flash vbmeta_a vbmeta_disable_verity.img
+    3)fastboot flashing lock
+    4)fastboot reboot
+    5)adb root
+    6)adb remount
+
+################
+disable se
+################
+setenforce 0
+getenforce
+
+################
+gpio toggling
+################
+For BT reset pin, GPIO5 (gpio439) is used.
+For WiFi reset,GPIO0(gpio434)
+cd /sys/class/gpio
+gordon_peak:/sys/class/gpio # echo 434 > export
+gordon_peak:/sys/class/gpio # cd gpio434
+gordon_peak:/sys/class/gpio/gpio434 # cat direction
+in
+gordon_peak:/sys/class/gpio/gpio434 # cat value
+0
+echo high > direction
+gordon_peak:/sys/class/gpio/gpio434 # cat direction
+out
+gordon_peak:/sys/class/gpio/gpio434 # cat value
+1
+echo in > direction
+gordon_peak:/sys/class/gpio/gpio434 # cat direction
+in
+gordon_peak:/sys/class/gpio/gpio434 # cat value
+0
+
+######################
+wifi chip manual test
+######################
+1.insmod
+#new way using vendor folder, above gerrits using this way
+  insmod /vendor/lib/modules/bcmdhd.ko \
+         firmware_path=/vendor/firmware/rtecdc.bin \
+         nvram_path=/vendor/etc/wifi/nvram.txt \
+         clm_path=/vendor/etc/wifi/4359b1.clm_blob
+
+2.use wl to test wifi chip functionalities
+  gordon_peak:/ # wl down
+  gordon_peak:/ # wl ver
+  gordon_peak:/ # wl scan
+  gordon_peak:/ # wl up
+  gordon_peak:/ # wl country
+  gordon_peak:/ # wl channels
+  gordon_peak:/ # wl status
+  gordon_peak:/ # wl scan
+  gordon_peak:/ # wl scanresults
+#wl can only join opne AP
+  gordon_peak:/ # wl join DENSO2605-2.4G
+  gordon_peak:/ # wl status
+  gordon_peak:/ # ifconfig -a
+
+#old way using system folder
+  insmod /vendor/lib/modules/bcmdhd.ko \
+         firmware_path=/system/vendor/firmware/rtecdc.bin \
+         nvram_path=/system/etc/wifi/nvram.txt \
+         clm_path=/data/misc/wifi/4359b1.clm_blob
+
+#old way to push components to target:
+  1.wlan driver
+    adb push bcmdhd.ko /vendor/firmware/bcmdhd.ko
+  2.firmware
+    adb push fw_bcmdhd_mfg.bin /system/vendor/firmware/rtecde.bin
+  3.nvram.txt
+    adb push nvramxxx /system/etc/wifi/nvram.txt
+  4.libnl.so/libwpa_client.so
+    adb push libnl /system/lib/
+    adb push libwpa_client.so /system/lib
+  5.wpa_supplicant/hostapd
+    adb push wpa_supplicant /system/bin/
+    adb push hostapd /system/bin
+  6.clm_blob
+    adb push 4359b1.clm_blo /data/misc/wifi/
+  7.wpa_cli/hostapd_cli
+    adb push wpa_cli /system/bin/
+    adb push hostapd_cli /system/bin/
+  8.wlx86/dhdx86
+    adb push wlx86 /system/bin/
+    adb push dhdx86 /system/bin/
+  9.p2p_supplicant.conf/wpa_supplicant.conf/wpa_supplicant_ap.conf
+    adb push  p2p_supplicant.conf /data/misc/wifi/
+    adb push  wpa_supplicant.conf /data/misc/wifi
+    adb push  wpa_supplicant_ap.conf /data/misc/wifi
+

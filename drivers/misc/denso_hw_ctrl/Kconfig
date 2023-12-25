@@ -1,0 +1,16 @@
+comment "DENSO Hardware Control"
+
+config DENSO_HW_CTRL
+	tristate "DENSO proprietary hardware control for HONDA battery disconnect, nor parameters"
+	depends on MTD
+	default n
+	help
+	  A DENSO proprietary module. Say m when you want to support this tool.
+
+config DENSO_HW_CTRL_USE_PDR
+	bool "Find the OEM region using the PDR directory?"
+	depends on DENSO_HW_CTRL
+	default n
+	help
+	  Determine the location of the OEM region in the IFWI in NOR using the PDR
+	  directory.  If n (the default), a pre-determined location is used.

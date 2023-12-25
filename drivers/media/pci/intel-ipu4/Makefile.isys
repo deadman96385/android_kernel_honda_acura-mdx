@@ -1,0 +1,15 @@
+ifeq ($(IPU_STEP),bxtB0)
+#intel-ipu4-isys-mod
+intel-ipu4-isys-mod-$(IPU_STEP)-objs			+= ../intel-ipu4-isys.$(IPU_STEP).lnk.o ../intel-ipu-isys-csi2-common.$(IPU_STEP).lnk.o \
+					   ../intel-ipu4-isys-csi2.$(IPU_STEP).lnk.o \
+					   ../intel-ipu4-isys-compat-defs.$(IPU_STEP).lnk.o \
+					   ../intel-ipu4-isys-csi2-be-soc.$(IPU_STEP).lnk.o \
+					   ../intel-ipu4-isys-csi2-be.$(IPU_STEP).lnk.o \
+					   ../intel-ipu4-isys-fw-msgs.$(IPU_STEP).lnk.o \
+					   ../intel-ipu4-isys-isa.$(IPU_STEP).lnk.o \
+					   ../intel-ipu4-isys-video.$(IPU_STEP).lnk.o \
+					   ../intel-ipu4-isys-queue.$(IPU_STEP).lnk.o \
+					   ../intel-ipu4-isys-subdev.$(IPU_STEP).lnk.o \
+					   ../intel-ipu4-isys-tpg.$(IPU_STEP).lnk.o
+obj-$(CONFIG_VIDEO_INTEL_IPU4)		+= intel-ipu4-isys-mod-$(IPU_STEP).o
+endif

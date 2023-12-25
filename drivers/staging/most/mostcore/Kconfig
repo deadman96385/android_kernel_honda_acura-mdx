@@ -1,0 +1,9 @@
+config MOSTCORE
+	tristate "MOSTCORE"
+
+	---help---
+	  Say Y here if you want to communicate via V4L2 devices using
+	  the interface of mostcore driver.
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called mostcore.

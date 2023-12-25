@@ -1,0 +1,5 @@
+ifeq ($(IPU_STEP),bxtB0)
+#intel-ipu4-mmu
+intel-ipu4-mmu-$(IPU_STEP)-objs		+= ../intel-ipu4-mmu.$(IPU_STEP).lnk.o
+obj-$(CONFIG_VIDEO_INTEL_IPU4)		+= intel-ipu4-mmu-$(IPU_STEP).o
+endif

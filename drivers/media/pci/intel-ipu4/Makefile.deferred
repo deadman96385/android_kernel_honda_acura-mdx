@@ -1,0 +1,5 @@
+ifeq ($(IPU_STEP),bxtB0)
+ifeq ($(CONFIG_VIDEO_INTEL_IPU4),y)
+obj-y		+= ../intel-ipu4-bus-deferred.$(IPU_STEP).lnk.o
+endif
+endif
